@@ -33,7 +33,7 @@ driver.get(r'' + IG_LINK)
 
 time.sleep(5)
 driver.find_element("name","username").send_keys(USERNAME)
-time.sleep(0.5)
+time.sleep(0.4)
 driver.find_element("name","password").send_keys(PASSWORD)
 time.sleep(0.7)
 driver.find_element("xpath","//button[@type='submit']").click()
@@ -50,7 +50,7 @@ retry_count = 0
 while retry_count < 10:
 
     driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
-    time.sleep(1)
+    time.sleep(0.5)
 
     # save all cover photos
     elements = driver.find_elements(By.XPATH,"//img[@class='_aagt']")
@@ -67,10 +67,12 @@ while retry_count < 10:
             if not c in clicked:
                 clicked.append(c)
                 c.click()
+                retry_count = 0
+                print("Reset successive retry count.")
                 page = 0
                 # repeat 9 more times or up to limit
                 while page < 9:
-                    time.sleep(1)
+                    time.sleep(0.5)
                     try:
                         # click next button
                         driver.find_element(By.XPATH, "//button[@aria-label='Next']").click()
@@ -88,8 +90,6 @@ while retry_count < 10:
                 driver.execute_script("window.history.go(-1)")
             else:
                 print("Oops, already clicked that.")
-        retry_count = 0
-        print("Reset successive retry count.")
     except:
         print("WebDriver issue encountered. Proceeding.")
         retry_count = retry_count + 1
