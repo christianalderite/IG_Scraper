@@ -17,10 +17,10 @@ def save_image(source):
     fp.close()
     print("saved image" + filename)
 
-IG_LINK = 'https://www.instagram.com/alderight'
+IG_LINK = 'https://www.instagram.com/johannahmontes.dc'
 USERNAME = 'alderight'
 PASSWORD = 'Awesomesince(1997)1'
-SAVE_PATH = os.path.abspath(os.getcwd()) + "\\downloads\\" + USERNAME + "\\"
+SAVE_PATH = os.path.abspath(os.getcwd()) + "\\downloads\\" + IG_LINK.split("/")[-1] + "\\"
 
 try:
     os.makedirs(SAVE_PATH)
@@ -42,41 +42,57 @@ time.sleep(5)
 driver.get(r'' + IG_LINK)
 time.sleep(5)
 
-# traverse page length
-for i in range(3):
-    driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
-    time.sleep(3)
-
-# save all cover photos
 sources = []
-elements = driver.find_elements(By.XPATH,"//img[@class='_aagt']")
-for e in elements:
-    src = e.get_attribute("src")
-    sources.append(src)
-    save_image(src)
+clicked = []
+retry_count = 0
 
-# deep traverse photos
-clickables = driver.find_elements(By.XPATH,"//*/article//div//div//div//div//a")
-for c in clickables:
-    c.click()
-    page = 0
-    # repeat 9 more times or up to limit
-    while page < 9:
-        time.sleep(1)
-        try:
-            # click next button
-            driver.find_element(By.XPATH, "//button[@aria-label='Next']").click()
-            # check if already saved
-            elements = driver.find_elements(By.XPATH,"//img[@class='_aagt']")
-            for e in elements:
-                src = e.get_attribute("src")
-                if not src in sources:
-                    sources.append(src)
-                    save_image(src)
-        except:
-            print('No more next buttons')
-            break
-        page = page + 1
-    driver.execute_script("window.history.go(-1)")
+# traverse page length
+while retry_count < 10:
+
+    driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
+    time.sleep(1)
+
+    # save all cover photos
+    elements = driver.find_elements(By.XPATH,"//img[@class='_aagt']")
+    for e in elements:
+        src = e.get_attribute("src")
+        if not src in sources:
+            sources.append(src)
+            save_image(src)
+
+    try:
+        # deep traverse photos
+        clickables = driver.find_elements(By.XPATH,"//*/article//div//div//div//div//a")
+        for c in clickables:
+            if not c in clicked:
+                clicked.append(c)
+                c.click()
+                page = 0
+                # repeat 9 more times or up to limit
+                while page < 9:
+                    time.sleep(1)
+                    try:
+                        # click next button
+                        driver.find_element(By.XPATH, "//button[@aria-label='Next']").click()
+                        # check if already saved
+                        elements = driver.find_elements(By.XPATH,"//img[@class='_aagt']")
+                        for e in elements:
+                            src = e.get_attribute("src")
+                            if not src in sources:
+                                sources.append(src)
+                                save_image(src)
+                    except:
+                        print('No more next buttons')
+                        break
+                    page = page + 1
+                driver.execute_script("window.history.go(-1)")
+            else:
+                print("Oops, already clicked that.")
+        retry_count = 0
+        print("Reset successive retry count.")
+    except:
+        print("WebDriver issue encountered. Proceeding.")
+        retry_count = retry_count + 1
+        print("Successive retry count: " + str(retry_count))
 
 exit()
