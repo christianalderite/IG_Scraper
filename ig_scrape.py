@@ -12,22 +12,27 @@ USERNAME = 'alderight'
 PASSWORD = 'Awesomesince(1997)1'
 SAVE_PATH = os.path.abspath(os.getcwd()) + "\\downloads\\" + USERNAME + "\\"
 
-os.makedirs(SAVE_PATH)
-
+try:
+    os.makedirs(SAVE_PATH)
+except:
+    print("SAVE PATH already exists. Proceeding...")
 
 driver = webdriver.Chrome(r"C:\Users\Arceus\Desktop\Web Scraping Practice\chromedriver_win32\chromedriver.exe")
 
 driver.get(r'' + IG_LINK)
 
-time.sleep(0.2)
+time.sleep(5)
 driver.find_element("name","username").send_keys(USERNAME)
-time.sleep(0.3)
+time.sleep(0.5)
 driver.find_element("name","password").send_keys(PASSWORD)
-time.sleep(0.2)
+time.sleep(0.7)
 driver.find_element("xpath","//button[@type='submit']").click()
-time.sleep(0.2)
+time.sleep(0.5)
 
 driver.get(r'' + IG_LINK)
+time.sleep(5)
+driver.execute_script("window.scrollTo(0,document.body.scrollHeight)")
+time.sleep(7)
 
 elements = driver.find_elements("xpath","//*/div//img")
 
