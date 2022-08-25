@@ -17,7 +17,7 @@ def save_image(source):
     fp.close()
     print("saved image" + filename)
 
-IG_LINK = 'https://www.instagram.com/johannahmontes.dc'
+IG_LINK = 'https://www.instagram.com/alderight'
 USERNAME = 'alderight'
 PASSWORD = 'Awesomesince(1997)1'
 SAVE_PATH = os.path.abspath(os.getcwd()) + "\\downloads\\" + IG_LINK.split("/")[-1] + "\\"
@@ -59,6 +59,9 @@ while retry_count < 10:
         if not src in sources:
             sources.append(src)
             save_image(src)
+            if retry_count > 0:
+                retry_count = 0
+                print("Reset successive retry count.")
 
     try:
         # deep traverse photos
@@ -67,8 +70,6 @@ while retry_count < 10:
             if not c in clicked:
                 clicked.append(c)
                 c.click()
-                retry_count = 0
-                print("Reset successive retry count.")
                 page = 0
                 # repeat 9 more times or up to limit
                 while page < 9:
@@ -84,7 +85,7 @@ while retry_count < 10:
                                 sources.append(src)
                                 save_image(src)
                     except:
-                        print('No more next buttons')
+                        print('Loading next set...')
                         break
                     page = page + 1
                 driver.execute_script("window.history.go(-1)")
@@ -95,4 +96,5 @@ while retry_count < 10:
         retry_count = retry_count + 1
         print("Successive retry count: " + str(retry_count))
 
+driver.close()
 exit()
