@@ -17,9 +17,9 @@ def save_image(source):
     fp.close()
     print("saved image" + filename)
 
-IG_LINK = 'https://www.instagram.com/alderight'
-USERNAME = 'alderight'
-PASSWORD = 'Awesomesince(1997)1'
+IG_LINK = 'https://www.instagram.com/target_account'
+USERNAME = 'YOURUSERNAME'
+PASSWORD = 'YOURPASSWORD'
 SAVE_PATH = os.path.abspath(os.getcwd()) + "\\downloads\\" + IG_LINK.split("/")[-1] + "\\"
 
 try:
@@ -27,7 +27,8 @@ try:
 except:
     print("SAVE PATH already exists. Proceeding...")
 
-driver = webdriver.Chrome(r"C:\Users\Arceus\Desktop\Web Scraping Practice\chromedriver_win32\chromedriver.exe")
+# CHANGE to your WebDriver location
+driver = webdriver.Chrome(r"C:\Users\Arceus\Desktop\Scraper\chromedriver_win32\chromedriver.exe")
 
 driver.get(r'' + IG_LINK)
 
@@ -44,11 +45,13 @@ time.sleep(5)
 
 sources = []
 
-# deep traverse photos
+# open first photo set
 driver.find_element(By.XPATH,"//*/article//div//div//div//div//a").click()
+
+# traverse all photo sets
 while True:
     page = 0
-    # repeat 9 more times or up to limit
+    # traverse each page of set
     while page < 9:
         time.sleep(1)
         try:
@@ -56,21 +59,22 @@ while True:
             elements = driver.find_elements(By.XPATH,"//img[@class='_aagt']")
             for e in elements:
                 src = e.get_attribute("src")
+                # save photo if not already saved
                 if not src in sources:
                     sources.append(src)
                     save_image(src)
-            # click next button
+            # click next button to go to next page of set
             driver.find_element(By.XPATH, "//button[@aria-label='Next']").click()
         except:
             break
         page = page + 1
-    # click next set
+    
     try:
+        # click next button to go to next set
         print('Loading next set...')
         input_el = driver.find_element(By.XPATH, "//*[local-name() = 'svg' and @aria-label='Next']")
         to_click = input_el.find_element(By.XPATH,"./../..")
         driver.execute_script("arguments[0].click();", to_click)
-        time.sleep
     except:
         print("No more sets. Finished.")
         break

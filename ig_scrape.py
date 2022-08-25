@@ -17,9 +17,9 @@ def save_image(source):
     fp.close()
     print("saved image" + filename)
 
-IG_LINK = 'https://www.instagram.com/alderight'
-USERNAME = 'alderight'
-PASSWORD = 'Awesomesince(1997)1'
+IG_LINK = 'https://www.instagram.com/target_account'
+USERNAME = 'YOURUSERNAME'
+PASSWORD = 'YOURPASSWORD'
 SAVE_PATH = os.path.abspath(os.getcwd()) + "\\downloads\\" + IG_LINK.split("/")[-1] + "\\"
 
 try:
@@ -27,7 +27,8 @@ try:
 except:
     print("SAVE PATH already exists. Proceeding...")
 
-driver = webdriver.Chrome(r"C:\Users\Arceus\Desktop\Web Scraping Practice\chromedriver_win32\chromedriver.exe")
+# CHANGE to your WebDriver location
+driver = webdriver.Chrome(r"C:\Users\Arceus\Desktop\Scraper\chromedriver_win32\chromedriver.exe")
 
 driver.get(r'' + IG_LINK)
 
