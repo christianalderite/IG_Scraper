@@ -52,8 +52,6 @@ while True:
     while page < 9:
         time.sleep(1)
         try:
-            # click next button
-            driver.find_element(By.XPATH, "//button[@aria-label='Next']").click()
             # check if already saved
             elements = driver.find_elements(By.XPATH,"//img[@class='_aagt']")
             for e in elements:
@@ -61,14 +59,21 @@ while True:
                 if not src in sources:
                     sources.append(src)
                     save_image(src)
+            # click next button
+            driver.find_element(By.XPATH, "//button[@aria-label='Next']").click()
         except:
-            print('Loading next set...')
             break
         page = page + 1
     # click next set
-    input_el = driver.find_element(By.XPATH, "//*[local-name() = 'svg' and @aria-label='Next']")
-    to_click = input_el.find_element(By.XPATH,"./../..")
-    driver.execute_script("arguments[0].click();", to_click)
+    try:
+        print('Loading next set...')
+        input_el = driver.find_element(By.XPATH, "//*[local-name() = 'svg' and @aria-label='Next']")
+        to_click = input_el.find_element(By.XPATH,"./../..")
+        driver.execute_script("arguments[0].click();", to_click)
+        time.sleep
+    except:
+        print("No more sets. Finished.")
+        break
 
 driver.close()
 exit()
