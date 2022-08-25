@@ -9,3 +9,7 @@ driver = webdriver.Chrome(r"C:\Users\Arceus\Desktop\Scraper\chromedriver_win32\c
 3. Run in command prompt inside this directory like below:
 python ig_scrape_2.py
 
+Note:
+Version 1 and 2 does the same thing, but 2 is a lot more efficient.
+I kept both so you can see my optimization process.
+I made both from scratch with only knowledge of Selenium usage.
