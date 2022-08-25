@@ -50,7 +50,7 @@ retry_count = 0
 while retry_count < 10:
 
     driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
-    time.sleep(0.5)
+    time.sleep(1)
 
     # save all cover photos
     elements = driver.find_elements(By.XPATH,"//img[@class='_aagt']")
@@ -73,7 +73,7 @@ while retry_count < 10:
                 page = 0
                 # repeat 9 more times or up to limit
                 while page < 9:
-                    time.sleep(0.5)
+                    time.sleep(1)
                     try:
                         # click next button
                         driver.find_element(By.XPATH, "//button[@aria-label='Next']").click()
