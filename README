@@ -1,0 +1,11 @@
+In order to run this:
+
+1. Install the latest version of Python
+
+2. Set the web driver path in the .py files relative to your local copy:
+# CHANGE below in .py file to your WebDriver location, example path:
+driver = webdriver.Chrome(r"C:\Users\Arceus\Desktop\Scraper\chromedriver_win32\chromedriver.exe")
+
+3. Run in command prompt inside this directory like below:
+python ig_scrape_2.py
+
