@@ -11,26 +11,31 @@ from selenium.webdriver.common.by import By
 
 def save_image(source):
     r = requests.get(source)
-    filename = str(random.randint(10000000,99999999)) + ".jpg"
+    filename = str(datetime.utcnow().strftime('%Y%m%d%H%M%S%f')[:-3]) + ".jpg"
     fp = open(SAVE_PATH + filename, 'wb')
     fp.write(r.content)
     fp.close()
     print("saved image" + filename)
 
+# CHANGE these based on your use case
 IG_LINK = 'https://www.instagram.com/target_account'
 USERNAME = 'YOURUSERNAME'
 PASSWORD = 'YOURPASSWORD'
-SAVE_PATH = os.path.abspath(os.getcwd()) + "\\downloads\\" + IG_LINK.split("/")[-1] + "\\"
+
+# CHANGE to your WebDriver location
+WEB_DRIVER_PATH = r"C:\Users\Arceus\Desktop\Scraper\chromedriver_win32\chromedriver.exe"
+
+# Rather not change this
+SAVE_PATH = os.path.abspath(os.getcwd()) + "\\downloads\\" + IG_LINK.split("/")[-1] + "_" + str(time.strftime("%Y%m%d%H%M")) + "\\"
 
 try:
     os.makedirs(SAVE_PATH)
 except:
     print("SAVE PATH already exists. Proceeding...")
 
-# CHANGE to your WebDriver location
-driver = webdriver.Chrome(r"C:\Users\Arceus\Desktop\Scraper\chromedriver_win32\chromedriver.exe")
+driver = webdriver.Chrome(WEB_DRIVER_PATH)
 
-driver.get(r'' + IG_LINK)
+driver.get(r'' + 'https://www.instagram.com')
 
 time.sleep(5)
 driver.find_element("name","username").send_keys(USERNAME)
@@ -53,7 +58,7 @@ while True:
     page = 0
     # traverse each page of set
     while page < 9:
-        time.sleep(1)
+        time.sleep(1 + 0.01 * random.randint(10,50))
         try:
             # check if already saved
             elements = driver.find_elements(By.XPATH,"//img[@class='_aagt']")
@@ -79,5 +84,5 @@ while True:
         print("No more sets. Finished.")
         break
 
-driver.close()
+#driver.close()
 exit()
